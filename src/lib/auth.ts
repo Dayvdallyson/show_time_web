@@ -1,9 +1,7 @@
 export type LoginCredentials = { email: string; password: string };
 
-export class LoginError extends Error {}
+export class LoginError extends Error { }
 
-// Contrato: POST /api/auth/login { email, password } → 2xx com a sessão em cookie
-// (o proxy do index.ts mantém tudo na mesma origem), ou { error } em caso de falha.
 export async function login(credentials: LoginCredentials): Promise<void> {
   let response: Response;
   try {
