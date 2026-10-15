@@ -1,0 +1,72 @@
+# ─── Dependências ────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.*
+*.tgz
+
+# ─── Build (bun build → dist/) ───────────────────────────────
+dist/
+out/
+build/
+*.bun-build
+storybook-static/
+
+# ─── Variáveis de ambiente ───────────────────────────────────
+# O Bun carrega .env automaticamente; nunca versionar segredos.
+# Documente as variáveis necessárias em .env.example.
+.env
+.env.*
+!.env.example
+
+# ─── Testes e cobertura (bun test, Playwright) ───────────────
+coverage/
+*.lcov
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# ─── Logs ────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+bun-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ─── Caches ──────────────────────────────────────────────────
+.cache/
+.eslintcache
+.stylelintcache
+.prettiercache
+*.tsbuildinfo
+.turbo/
+
+# ─── Certificados locais (HTTPS em dev) ──────────────────────
+*.pem
+*.key
+*.crt
+
+# ─── Deploy ──────────────────────────────────────────────────
+.vercel/
+.netlify/
+
+# ─── Editores ────────────────────────────────────────────────
+.idea/
+*.swp
+*.swo
+*~
+# VS Code: versiona só as configs compartilhadas do projeto
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# ─── Claude Code (config pessoal) ────────────────────────────
+.claude/settings.local.json
+
+# ─── Sistema operacional ─────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+/features.md

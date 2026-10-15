@@ -1,5 +1,5 @@
-import { AtSign, LockKeyhole } from "lucide-react";
-import type { ComponentProps, FormEvent, ReactNode } from "react";
+import { AtSign, Loader2, LockKeyhole } from "lucide-react";
+import type { ComponentProps, ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,10 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-export type LoginCredentials = { email: string; password: string };
+export type LoginFormState = { error: string | null; email: string };
 
-type LoginFormProps = Omit<ComponentProps<"form">, "onSubmit"> & {
-  onLogin?: (credentials: LoginCredentials) => void;
+type LoginFormProps = Omit<ComponentProps<"form">, "action"> & {
+  action: (formData: FormData) => void;
+  state: LoginFormState;
+  isPending: boolean;
   onSignUp?: () => void;
   onForgotPassword?: () => void;
 };
@@ -18,15 +20,17 @@ type LoginFormProps = Omit<ComponentProps<"form">, "onSubmit"> & {
 const authButton =
   "bg-auth-button text-white hover:bg-auth-button-hover h-9 rounded-[5px] text-sm font-normal transition-colors duration-300 focus-visible:ring-white/30";
 
-export function LoginForm({ className, onLogin, onSignUp, onForgotPassword, ...props }: LoginFormProps) {
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    onLogin?.({ email: String(data.get("email")), password: String(data.get("password")) });
-  }
-
+export function LoginForm({
+  className,
+  action,
+  state,
+  isPending,
+  onSignUp,
+  onForgotPassword,
+  ...props
+}: LoginFormProps) {
   return (
-    <form onSubmit={handleSubmit} className={cn("w-full max-w-[290px]", className)} {...props}>
+    <form action={action} className={cn("w-full max-w-[290px]", className)} {...props}>
       <Card className="bg-auth-surface gap-0 rounded-[25px] border-0 px-8 pt-10 pb-11 text-white shadow-none transition-transform duration-300 hover:scale-[1.02]">
         <CardHeader className="px-0">
           <CardTitle className="text-center text-xl font-normal">Login</CardTitle>
@@ -40,6 +44,10 @@ export function LoginForm({ className, onLogin, onSignUp, onForgotPassword, ...p
               type="email"
               autoComplete="email"
               placeholder="Email"
+              defaultValue={state.email}
+              key={state.email}
+              disabled={isPending}
+              aria-invalid={state.error ? true : undefined}
               required
               className={fieldInput}
             />
@@ -52,15 +60,22 @@ export function LoginForm({ className, onLogin, onSignUp, onForgotPassword, ...p
               type="password"
               autoComplete="current-password"
               placeholder="Senha"
+              disabled={isPending}
+              aria-invalid={state.error ? true : undefined}
               required
               className={fieldInput}
             />
           </AuthField>
+
+          <p role="alert" aria-live="polite" className="min-h-5 px-4 text-sm text-red-400">
+            {state.error}
+          </p>
         </CardContent>
 
-        <CardFooter className="mt-14 grid grid-cols-2 gap-2 px-0">
-          <Button type="submit" className={authButton}>
-            Entrar
+        <CardFooter className="mt-9 grid grid-cols-2 gap-2 px-0">
+          <Button type="submit" disabled={isPending} className={authButton}>
+            {isPending ? <Loader2 className="animate-spin" /> : null}
+            {isPending ? "Entrando..." : "Entrar"}
           </Button>
           <Button type="button" onClick={onSignUp} className={authButton}>
             Cadastrar
