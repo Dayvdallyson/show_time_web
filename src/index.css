@@ -24,7 +24,7 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
 
-  /* Tela de login (tema escuro) */
+  /* Login screen (dark theme) */
   --auth-surface: #171717;
   --auth-field: #171717;
   --auth-button: #252525;
